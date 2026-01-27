@@ -1,0 +1,23 @@
+.input{
+    background-color: burlywood;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button{
+    cursor: pointer;
+    width: 15%;
+    height: 2rem;
+    font-size: 1rem;
+}
+
+.input--bar{
+    width: 45%;
+    height: 2rem;
+    font-size: 1rem;
+    letter-spacing: 0.1rem;
+    padding: 0 1rem 0;
+    outline: none;
+    /* padding: 0.5rem 0 0.5rem; */
+}
