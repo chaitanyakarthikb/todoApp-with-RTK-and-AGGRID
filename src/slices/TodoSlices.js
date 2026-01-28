@@ -14,10 +14,9 @@ const todoSlice = createSlice({
         },
         UPDATE_TODO:(state,action)=>{
             let id = state.findIndex((el)=>el.id === action.payload.id);
-            state[id].task = action.payload.task;
+            state[id].task = action.payload.newTodo;
         },
         DELETE_TODO:(state,action)=>{
-            console.log("========action",action);
             let id = state.findIndex((el)=>el.id === action.payload);
             state.splice(id,1);
         },
