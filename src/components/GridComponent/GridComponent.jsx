@@ -3,14 +3,19 @@ import './GridComponent.css'
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'; 
 import { AgGridReact } from 'ag-grid-react';
 import {useDispatch, useSelector} from 'react-redux'
-import { COMPLETE_TODO, DELETE_TODO, UPDATE_TODO } from '../../slices/TodoSlices';
+import { COMPLETE_TODO, DELETE_TODO, fetchTodos, UPDATE_TODO } from '../../slices/TodoSlices';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 const GridComponent = () => {
   const dispatch = useDispatch();
+
+  useEffect(()=>{
+    dispatch(fetchTodos())
+
+  },[]);
   const todos = useSelector((store)=>{
-    return store?.todos;
+    return store?.todos?.todos;
   });
 
   const generateRowData = (todos)=>{

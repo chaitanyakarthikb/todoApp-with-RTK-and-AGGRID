@@ -1,9 +1,24 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { nanoid } from "nanoid";
 
+export const initialState = {
+    todos:[],
+    isLoading:false,
+    error:null
+}
+export const fetchTodos = createAsyncThunk("todos/FETCH_TASKS",async(_,{rejectWithValue})=>{
+    try {
+        const tasks = await fetch('http://localhost:3001/todos');
+        const response = await tasks.json();
+        console.log("===========",response);
+        return {todos:response};
+    } catch (error) {
+        return rejectWithValue("SOMETHING WENT WRONG!!!")
+    }
+})
 const todoSlice = createSlice({
     name:"TodoSlice",
-    initialState:[],
+    initialState,
     reducers:{
         ADD_TODO:(state,action)=>{
             state.push({
@@ -27,6 +42,20 @@ const todoSlice = createSlice({
                 completed:true,
             }
         }
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchTodos.pending, (state, action) => {
+                state.isLoading = true;
+            })
+            .addCase(fetchTodos.fulfilled, (state, action) => {
+                state.todos = action.payload.todos;
+                state.isLoading = false;
+            })
+            .addCase(fetchTodos.rejected, (state, action) => {
+                state.error = action.payload;
+                state.isLoading = false;
+            })
     }
 })
 
