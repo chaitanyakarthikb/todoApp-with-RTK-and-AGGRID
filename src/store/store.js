@@ -7,7 +7,7 @@ const store = configureStore({
     reducer:{
         todos:todosReducer,
     },
-    middleware:(getDefaultMiddleWare)=>[...getDefaultMiddleWare(),errorMiddleWare,apiMiddleWare]
+    middleware:(getDefaultMiddleWare)=>[...getDefaultMiddleWare(),apiMiddleWare,errorMiddleWare,logger]
 })
 
 

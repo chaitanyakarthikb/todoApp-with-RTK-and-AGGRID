@@ -3,17 +3,12 @@ import './GridComponent.css'
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'; 
 import { AgGridReact } from 'ag-grid-react';
 import {useDispatch, useSelector} from 'react-redux'
-import { COMPLETE_TODO, DELETE_TODO, fetchTodos, UPDATE_TODO } from '../../slices/TodoSlices';
+import {  deleteTodoSlice, updateTodoCellNameSlice, updateTodoSlice } from '../../slices/TodoSlices';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 const GridComponent = () => {
   const dispatch = useDispatch();
-
-  useEffect(()=>{
-    dispatch(fetchTodos())
-
-  },[]);
   const todos = useSelector((store)=>{
     return store?.todos?.todos;
   });
@@ -32,12 +27,13 @@ const GridComponent = () => {
   }
 
   const handleCellChangeValue = (params)=>{
-    console.log("================params==========",params);
+    console.log("CELL VALUE CHANGED PARAMS",params);
     let actionObj = {
       id:params?.data?.el?.id,
+      completed:params?.data?.el?.completed,
       newTodo:params?.newValue,
     }
-    dispatch(UPDATE_TODO(actionObj))
+    dispatch(updateTodoCellNameSlice(actionObj))
   }
 
   useEffect(()=>{
@@ -45,11 +41,10 @@ const GridComponent = () => {
   },[todos])
   const renderButtons = (params)=>{
     const el = params.data.el;
-    console.log("================el",el)
     return (
       <div className='buttons'>
-        <button onClick={() => dispatch(COMPLETE_TODO(el.id))}>Mark as Done</button>
-        <button onClick={() => dispatch(DELETE_TODO(el.id))}>Delete</button>
+        <button onClick={() => dispatch(updateTodoSlice(el.id))}>Mark as Done</button>
+        <button onClick={() => dispatch(deleteTodoSlice(el.id))}>Delete</button>
       </div>
     )
   }
